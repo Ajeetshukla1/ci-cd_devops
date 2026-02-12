@@ -1,0 +1,61 @@
+#workflow/pipleline name
+name: Integration pipleline
+#every language has different pipeline we get it from github actions 
+#Events
+#jaise hi ye trigger hoga pura workflow chl jayega
+#eg) pull chalaya toh workflow chalu ho jayega
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+#jobs
+jobs:
+  #first job
+  build:
+    
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x] #it means it will run in all 3 nodes js version
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v4
+    #
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+    
+    - name: "buiding app"
+      run: echo "building app"
+    #npm test is for testing the test cases
+  #second job
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [18.x, 20.x, 22.x] #it means it will run in all 3 nodes js version
+        # See supported Node.js release schedule at https://nodejs.org/en/about/releases/
+
+    steps:
+    - uses: actions/checkout@v4
+    #
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ matrix.node-version }}
+        cache: 'npm'
+    
+   
+    - name: "testing app"
+      run: echo "testing app"
+#this is our ci pipeline:
+#it has two jobs
+#1)build->npm build
+#2)test->npm build
